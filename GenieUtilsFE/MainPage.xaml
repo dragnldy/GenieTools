@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GenieUtilsFE.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout Margin="0,15,0,0"
+            Spacing="15"
+            Padding="30,0"
+            VerticalOptions="Start">
+
+            <Image
+                Source="dragon_d.png"
+                SemanticProperties.Description="DRagnStudios Presents"
+                HeightRequest="100"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Genie Utilities"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="22"
+                HorizontalOptions="Center" />
+
+                <Grid BackgroundColor="Gray" WidthRequest="600" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                       Text="Settings"
+                       FontSize="16" 
+                           VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       BackgroundColor="DarkGray"/>
+                    
+                    <Label Grid.Row="1" Grid.Column="0"
+                        Text="Output Folder:"
+                        SemanticProperties.HeadingLevel="Level2"
+                        FontSize="12"
+                        VerticalOptions="Center"
+                         HorizontalOptions="Start"/>
+                    <Entry Grid.Row="1" Grid.Column="1"
+                           x:Name="txtOutputFolder"
+                           Text="{Binding OutputFolder}"
+                            FontSize="12"
+                           WidthRequest="400"
+                           />
+                    <Button Grid.Row="1" Grid.Column="2"
+                        x:Name="ChangeDestinationBtn"
+                        IsEnabled="{Binding IsNotBusy}"
+                        FontSize="12"
+                        Text="Change"
+                        SemanticProperties.Hint="Allows user to select output folder"
+                        Clicked="ChangeDestinationBtn_Clicked"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                            Margin="5,5,5,5"/>
+                    <Label Grid.Row="2" Grid.Column="0"
+                        Text="Settings File:"
+                        SemanticProperties.HeadingLevel="Level2"
+                        FontSize="12"
+                        HorizontalOptions="Start" />
+                    <Entry Grid.Row="2" Grid.Column="1"
+                           Text="{Binding SettingsFile}"
+                           FontSize="12"
+                           WidthRequest="400"
+                           x:Name="txtSettingsFile"
+                           />
+                    <Button Grid.Row="2" Grid.Column="2"
+                        x:Name="ChangeSourceBtn"
+                        IsEnabled="{Binding IsNotBusy}"
+                        FontSize="12"
+                        Text="Change"
+                        SemanticProperties.Hint="Allows user to select settings file to import"
+                        Clicked="ChangeSourceBtn_Clicked"
+                        HorizontalOptions="Center"
+                        Margin="5,5,5,5"/>
+            </Grid>
+            <Grid BackgroundColor="Gray" WidthRequest="600" 
+                  IsVisible="{Binding SettingsLoaded}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="20"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                       Text="Configuration Elements"
+                       FontSize="16" 
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       BackgroundColor="DarkGray"/>
+                <Button Grid.Row="0" Grid.Column="2"
+                        x:Name="ExtractConfigBtn"
+                        IsEnabled="{Binding IsNotBusy}"
+                        FontSize="12"
+                        Text="Extract"
+                        SemanticProperties.Hint="Trigger configuration process"
+                        Clicked="ExtractConfigBtn_Clicked"
+                        HorizontalOptions="Center"
+                        Margin="5,5,5,5"/>
+                <CheckBox Grid.Row="0" Grid.Column="0"  Margin="0,0,0,2"
+                          IsChecked="{Binding DoOverwrite}"
+                          IsEnabled="{Binding IsNotBusy}"
+                          HorizontalOptions="End"
+                          VerticalOptions="End"/>
+                <Label Grid.Row="0" Grid.Column="1" Margin="5,0,0,0"
+                        FontSize="12"
+                       Text="Overwrite Existing Files"
+                       VerticalTextAlignment="End"
+                       HorizontalOptions="Start"/>
+                <CheckBox Grid.Row="1" Grid.Column="0"  Margin="0,5,0,5"
+                          IsChecked="{Binding DoScripts}"
+                          IsEnabled="{Binding IsNotBusy}"
+                          HorizontalOptions="End"/>
+                <Label Grid.Row="1" Grid.Column="1" Margin="5,0,0,0"
+                        FontSize="12"
+                       Text="{Binding ScriptsAvailable}"
+                       VerticalTextAlignment="Center"
+                       HorizontalOptions="Start"/>
+               
+                <CheckBox Grid.Row="2" Grid.Column="0" Margin="0,5,0,5"
+                          IsChecked="{Binding DoOthers}"
+                          IsEnabled="{Binding IsNotBusy}"
+                          HorizontalOptions="End"/>
+                <Label Grid.Row="2" Grid.Column="1"  Margin="5,0,0,0"
+                        FontSize="12"
+                       Text="Highlights, Ignores, Names, etc"
+                       VerticalTextAlignment="Center"
+                       HorizontalOptions="Start"/>
+
+            </Grid>
+            <Grid BackgroundColor="Gray" WidthRequest="600">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="600"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <ProgressBar  Grid.Row="0" Grid.Column="0"
+                              x:Name="pbProgress"
+                              VerticalOptions="Center"
+                              Progress="{Binding LoadingProgress}" 
+                              ProgressColor="Orange" />
+
+                <Label Grid.Row="1" Grid.Column="0"
+                       Text="{Binding ProcessStatus}"
+                       FontSize="12" 
+                           VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       BackgroundColor="DarkGray"/>
+
+            </Grid>
+            <ActivityIndicator IsRunning="{Binding IsCurrentlyBusy}" />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
